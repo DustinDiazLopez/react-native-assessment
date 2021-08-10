@@ -1,15 +1,33 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
+import { Button, Text, View } from 'react-native';
 
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
+import Colors from '../constants/Colors';
 import styles from '../styles/home';
 
-const TabOneScreen: React.FC<unknown> = (): JSX.Element => (
-  <View style={styles.container}>
-    <Text style={styles.title}>Tab One</Text>
-    <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-    <EditScreenInfo path="/screens/TabOneScreen.tsx" />
-  </View>
-);
+const HomeScreen: React.FC<unknown> = (): JSX.Element => {
+  const nav = useNavigation();
 
-export default TabOneScreen;
+  const onShowNewsHandler = (): void => {
+    nav.navigate('NewsScreen');
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>React Native Assessment</Text>
+      <View style={styles.separator} />
+      <Text style={styles.text}>&quot;Intelligence is the ability to adapt to change.&quot;</Text>
+      <Text style={styles.author}>- Stephen Hawking</Text>
+
+      <View style={styles.separator} />
+
+      <Button
+        onPress={onShowNewsHandler}
+        title="Show News"
+        color={Colors.light.tint}
+      />
+    </View>
+  );
+};
+
+export default HomeScreen;

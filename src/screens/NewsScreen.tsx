@@ -1,16 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
+import { Article } from '../@types';
 
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
+import Loading from '../components/Loading';
+import NewsList from '../components/NewsList';
+import getNews from '../remote';
 
 import styles from '../styles/news';
 
-const TabTwoScreen: React.FC<unknown> = (): JSX.Element => (
-  <View style={styles.container}>
-    <Text style={styles.title}>Tab Two</Text>
-    <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-    <EditScreenInfo path="/screens/TabTwoScreen.tsx" />
-  </View>
-);
+const LIMIT = 50;
+const NewsScreen: React.FC<unknown> = (): JSX.Element => {
+  const [news, setNews] = useState<Article[] | null>(null);
 
-export default TabTwoScreen;
+  const fetchData = (): void => {
+    (async (): Promise<void> => {
+      const newsData = await getNews(LIMIT);
+      setNews(newsData.splice(0, LIMIT));
+    })();
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  return (
+    <View style={styles.container}>
+      {
+        news
+          ? <NewsList articles={news} />
+          : <Loading />
+      }
+    </View>
+  );
+};
+
+export default NewsScreen;

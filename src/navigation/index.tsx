@@ -1,37 +1,77 @@
-/**
- * If you are not familiar with React Navigation, check out the "Fundamentals" guide:
- * https://reactnavigation.org/docs/getting-started
- *
- */
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
+/* eslint-disable react-native/no-inline-styles */
+import React from 'react';
+import { NavigationContainer, DefaultTheme, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import * as React from 'react';
-import { ColorSchemeName } from 'react-native';
+import {
+  Pressable, View, ViewStyle, StyleProp,
+} from 'react-native';
 
+import { AntDesign } from '@expo/vector-icons';
 import NotFoundScreen from '../screens/NotFoundScreen';
-import { RootStackParamList } from '../../types';
-import BottomTabNavigator from './BottomTabNavigator';
+import { HomeParamList, RootStackParamList } from '../../types';
 import LinkingConfiguration from './LinkingConfiguration';
+import NewsScreen from '../screens/NewsScreen';
+import HomeScreen from '../screens/HomeScreen';
+import Colors from '../constants/Colors';
 
-export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
+const HomeStack = createStackNavigator<HomeParamList>();
+
+const HomeNavigator: React.FC<unknown> = (): JSX.Element => {
+  const nav = useNavigation();
   return (
-    <NavigationContainer
-      linking={LinkingConfiguration}
-      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <RootNavigator />
-    </NavigationContainer>
+    <HomeStack.Navigator>
+      <HomeStack.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{
+          headerTitle: 'Home',
+          headerLeft: (): null => null,
+        }}
+      />
+      <HomeStack.Screen
+        name="NewsScreen"
+        component={NewsScreen}
+        options={{
+          headerTitle: 'News',
+          headerLeft: (): JSX.Element => (
+            <View style={{
+              marginLeft: 20,
+            }}
+            >
+              <Pressable
+                onPress={(): void => {
+                  nav.navigate('HomeScreen');
+                }}
+                style={({ pressed }): StyleProp<ViewStyle> => [
+                  { opacity: pressed ? 0.5 : 1 },
+                ]}
+              >
+                <AntDesign name="home" size={25} color={Colors.light.text} />
+              </Pressable>
+            </View>
+          ),
+        }}
+      />
+    </HomeStack.Navigator>
   );
-}
+};
 
-// A root stack navigator is often used for displaying modals on top of all other content
-// Read more here: https://reactnavigation.org/docs/modal
 const Stack = createStackNavigator<RootStackParamList>();
 
-function RootNavigator() {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Root" component={BottomTabNavigator} />
-      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-    </Stack.Navigator>
-  );
-}
+const RootNavigator: React.FC<unknown> = (): JSX.Element => (
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="Root" component={HomeNavigator} />
+    <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+  </Stack.Navigator>
+);
+
+const Navigation: React.FC<unknown> = (): JSX.Element => (
+  <NavigationContainer
+    linking={LinkingConfiguration}
+    theme={DefaultTheme}
+  >
+    <RootNavigator />
+  </NavigationContainer>
+);
+
+export default Navigation;

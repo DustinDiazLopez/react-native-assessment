@@ -6,16 +6,8 @@ export default {
     screens: {
       Root: {
         screens: {
-          Home: {
-            screens: {
-              HomeScreen: 'home',
-            },
-          },
-          News: {
-            screens: {
-              NewsScreen: 'news',
-            },
-          },
+          HomeScreen: 'home',
+          NewsScreen: 'news',
         },
       },
       NotFound: '*',

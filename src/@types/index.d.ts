@@ -4,12 +4,18 @@ export type Source = {
 };
 
 export type Article = {
-  source: Source,
-  author: string,
   title: string,
   description: string,
   url: string,
-  urlToImage: string,
+  urlToImage: string | null,
+  source: Source,
+  author: string,
   publishedAt: string,
   content: string,
+};
+
+export type ArticlesResponse = {
+  status: string,
+  totalResults: number,
+  articles: Article[]
 };
