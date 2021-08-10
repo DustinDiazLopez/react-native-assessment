@@ -9,7 +9,9 @@ const HomeScreen: React.FC<unknown> = (): JSX.Element => {
   const nav = useNavigation();
 
   const onShowNewsHandler = (): void => {
-    nav.navigate('NewsScreen');
+    nav.navigate('NewsScreen', {
+      limit: 50,
+    });
   };
 
   return (

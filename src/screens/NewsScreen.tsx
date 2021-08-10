@@ -1,5 +1,7 @@
+import { RouteProp } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
+import { HomeParamList } from '../../types';
 import { Article } from '../@types';
 
 import Loading from '../components/Loading';
@@ -8,19 +10,22 @@ import getNews from '../remote';
 
 import styles from '../styles/news';
 
-const LIMIT = 50;
-const NewsScreen: React.FC<unknown> = (): JSX.Element => {
-  const [news, setNews] = useState<Article[] | null>(null);
+type NewsScreenProps = {
+  route: RouteProp<HomeParamList, 'NewsScreen'>
+};
 
-  const fetchData = (): void => {
-    (async (): Promise<void> => {
-      const newsData = await getNews(LIMIT);
-      setNews(newsData.splice(0, LIMIT));
-    })();
-  };
+const NewsScreen: React.FC<NewsScreenProps> = ({ route }): JSX.Element => {
+  const [news, setNews] = useState<Article[]>();
+
+  const { limit } = route.params;
 
   useEffect(() => {
-    fetchData();
+    getNews(limit)
+      .then(setNews)
+      .catch((err) => {
+        console.error(err);
+        setNews([]);
+      });
   }, []);
 
   return (

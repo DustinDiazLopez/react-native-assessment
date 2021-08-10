@@ -5,5 +5,7 @@ export type RootStackParamList = {
 
 export type HomeParamList = {
   HomeScreen: undefined;
-  NewsScreen: undefined;
+  NewsScreen: {
+    limit: number,
+  };
 };
