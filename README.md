@@ -5,13 +5,13 @@ This app displays a list of articles and links back to the respective source of 
 ## Images
 
 ### Splash Screen
-[splash screen](images/splash-screen.png)
+![splash screen](images/splash-screen.png)
 
 ### Home Screen
-[home screen](images/home-screen.png)
+![home screen](images/home-screen.png)
 
 ### News Screen
-[news screen](images/news-screen.png)
+![news screen](images/news-screen.png)
 
 ## TODO
 
